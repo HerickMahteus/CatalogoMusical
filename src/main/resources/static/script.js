@@ -47,6 +47,39 @@ document.getElementById("btnX").addEventListener('click', async (event) => {
     }
 });
 
+document.getElementById("btnY").addEventListener('click', async (event) => {
+    const nome = document.getElementById("nome").value;
+    const discos = document.getElementById("discos").value;
+
+    const discos2 = {
+        id: discos
+    }
+
+    const artista = {
+        nome: nome,
+        discos: discos2
+    };
+
+    try {
+        const response = await fetch('http://localhost:8080/discos', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(artista)
+        });
+
+        if (response.ok) {
+            alert('Artista cadastrado com sucesso!');
+            document.getElementById('form-cadastrar-artista').reset();
+        } else {
+            throw new Error('Erro ao cadastrar artista: ' + response.status);
+        }
+    } catch (error) {
+        console.error('Erro ao cadastrar artista:', error);
+    }
+});
+
 document.getElementById('btnDeletarDisco').addEventListener('click', async (event) => {
 
     const id = document.getElementById('idDelete').value;
@@ -90,15 +123,11 @@ function carregarDiscos() {
                 const celulaAno = novaLinha.insertCell(1);
                 const celulaCapa = novaLinha.insertCell(2);
                 const celulaFaixas = novaLinha.insertCell(3);
-                const celulaGeneros = novaLinha.insertCell(4);
-                const celulaArtista = novaLinha.insertCell(5);
 
                 celulaTitulo.textContent = disco.titulo;
                 celulaAno.textContent = disco.anoLancamento;
                 celulaCapa.textContent = disco.capa;
                 celulaFaixas.textContent = disco.faixas;
-                celulaGeneros.textContent = disco.generos;
-                celulaArtista.textContent = disco.artista;
             });
         })
         .catch(error => {
